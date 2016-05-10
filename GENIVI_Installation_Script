@@ -1,0 +1,127 @@
+# PREPARING THE INSTALLATION REQUIRMENT FOR IVI
+
+sudo apt-get install gawk
+sudo apt-get install wget
+sudo apt-get install git-core
+sudo apt-get install diffstat
+sudo apt-get install unzip
+sudo apt-get install texinfo
+sudo apt-get install gcc-multilib
+sudo apt-get install build-essential
+sudo apt-get install chrpath
+sudo apt-get install socat
+sudo apt-get install libsdl1.2-dev
+sudo apt-get install xterm
+
+#Getting the Yocto Project¶
+#Set up your Source Directory by using Git to clone the poky repository and then check out the release branch:
+
+cd ~
+git clone git://git.yoctoproject.org/poky
+cd poky
+git checkout -b fido origin/fido
+
+
+Introduction
+
+The purpose of this document is to explain how to quickly setup the hardware and install the GENIVI Demo Platform (GDP) on QEMU (qemux86-64).
+
+Important note: When using purely software rendering in QEMU the GDP HMI will run with a very low frame rate. It is recommended that a KVM is used on the linux host to take advantage of the host hardware graphics acceleration.
+
+    Details about this can be found here: http://lists.genivi.org/pipermail/genivi-meta-ivi/2015-May/000529.html
+
+Software setup
+
+If you are building from source, ~60GB of storage needs to be available on the host machine
+
+The following is known to work on Ubuntu Linux 14.04 LTS (x86_64)
+Quick Start
+
+The Genivi Demo Platform repo utilises git-submodules and source scripts to automate the configuration of the required repository build layers. Allthough this does not fully automate the process, the use of it is advised especially for those wanting to get up and running quickly.
+Install the required development tools on the host by executing the following command.
+
+$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat libsdl1.2-dev xterm
+
+Create a directoy for the GDP sources
+
+$ mkdir GDP
+$ cd GDP
+
+Clone genivi demo platform using the recursion on QEMU branch
+
+$ git clone --recursive http://git.projects.genivi.org/genivi-demo-platform.git -b qemux86-64
+
+Initialise build environment
+
+$ cd $HOME/GDP/genivi-demo-platform
+$ source init.sh
+
+Bitbake the image
+
+$ bitbake genivi-demo-platform
+
+Once built, Setup Software & Boot
+Equipment Setup
+Software prerequisites
+
+Binary GENIVI Demo Platform image
+
+    If you built from source build from source, you should find the binaries in the following directory.
+
+    $ cd $HOME/GDP/gdp-src-build/tmp/deploy/images/qemux86-64/
+
+A remote desktop (VNC) client
+
+    For example Remmina, the remote desktop client for the GNOME desktop environment
+
+    $ sudo apt-get install remmina
+
+QEMU full system emulation binaries (x86-64)
+
+    To have the QEMU binaries available on the supported host invoke:
+
+    $ sudo apt-get install qemu-system-x86
+
+Hardware prerequisites
+
+You need a Personal Computer running Ubuntu Linux 14.04 LTS (x86_64).
+Launch QEMU
+
+    When built from source:
+
+    $ cd $BUILDDIR/tmp/deploy/images/qemux86-64/
+    $ QEMU_AUDIO_DRV=pa; $HOME/GDP/meta-genivi-demo/scripts/runqemu bzImage-qemux86-64.bin genivi-demo-platform-qemux86-64.ext3 qemuparams="-soundhw ac97"
+
+    Note: the $BUILDDIR environment variable is only set after you actually build from source.
+    Start remote desktop (VNC) client and attach to VNC server running on 127.0.0.1:5900
+
+    $ /usr/bin/remmina
+
+        Create a new Connection (Cltr-n)
+        Select Protocol: VNC - Virtual Network Computing
+        Set Server to: 127.0.0.1:5900
+        and leave the new connection dialog by pushing: Connect
+    A new window is created on your host. It shall display the QEMU booting and executing the GDP.
+
+To access the shell (ssh)
+
+    Please run following command on your HOST PC.
+    192.168.7.2 is your virtual board's IP address. To login use this credential : Password - root
+
+    $ ssh root@192.168.7.2
+
+To access the shell (serial)
+
+    In remote desktop (VNC) client change to the serial0 console using Ctrl-Alt-3.
+    To login use this credential : User - root / Password - root
+
+Shutdown QEMU
+
+    Access the shell (ssh or serial), login as administrator (user: 'root') and issue the command:
+
+    # poweroff
+
+
+
+
+            

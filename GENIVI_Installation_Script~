@@ -1,0 +1,25 @@
+# PREPARING THE INSTALLATION REQUIRMENT FOR IVI
+
+sudo apt-get install gawk
+sudo apt-get install wget
+sudo apt-get install git-core
+sudo apt-get install diffstat
+sudo apt-get install unzip
+sudo apt-get install texinfo
+sudo apt-get install gcc-multilib
+sudo apt-get install build-essential
+sudo apt-get install chrpath
+sudo apt-get install socat
+sudo apt-get install libsdl1.2-dev
+sudo apt-get install xterm
+
+#Getting the Yocto Project¶
+#Set up your Source Directory by using Git to clone the poky repository and then check out the release branch:
+
+cd ~
+git clone git://git.yoctoproject.org/poky
+cd poky
+git checkout -b fido origin/fido
+
+
+            
